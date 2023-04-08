@@ -26,7 +26,6 @@ export default async function fetchProxyList(
 ) {
   try {
     const browser = await getBrowserInstance();
-    console.log("browser");
     const page = await browser.newPage();
     await page.goto("https://www.sslproxies.org/");
 
