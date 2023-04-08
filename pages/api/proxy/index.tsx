@@ -1,5 +1,7 @@
+// @ts-ignore
 import chrome from "chrome-aws-lambda";
 import { NextApiRequest, NextApiResponse } from "next";
+// @ts-ignore
 import puppeteer from "puppeteer-core";
 
 let proxyList: { ip: string; port: string }[] = [];

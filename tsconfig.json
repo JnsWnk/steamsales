@@ -18,6 +18,7 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "./typings"],
+  "exclude": ["node_modules"],
+  "typeRoots": ["./typings", "./node_modules/@types/"]
 }
