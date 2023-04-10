@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +19,10 @@ export type Game = {
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
   const [responseData, setResponseData] = useState<{ [id: string]: Game }>({});
+
+  useEffect(() => {
+    fetch("api/proxy");
+  }, []);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
