@@ -4,6 +4,7 @@ export default async function fetchProxyList(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  /*
   const url = process.env.BACKEND_URL;
   const id = req.query.id;
 
@@ -29,5 +30,5 @@ export default async function fetchProxyList(
     console.log("SSE stream opened:", event);
     // Send the list of games to the server to start processing
     fetch(`${url}/getDeals${id}`).catch((error) => console.error(error));
-  });
+  });*/
 }
