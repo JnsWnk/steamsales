@@ -33,7 +33,7 @@ const Wishlist = () => {
         <button type="submit">Submit</button>
       </form>
       <div className="overflow-x-auto">
-        <table className="mx-auto w-full whitespace-no-wrap bg-white border-collapse">
+        <table className="mx-auto w-full whitespace-no-wrap border-collapse">
           <thead>
             <tr className="text-left font-bold">
               <th className="px-6 pt-6 pb-4">Name</th>
@@ -45,7 +45,7 @@ const Wishlist = () => {
           <tbody className="text-gray-700">
             {wishlist &&
               Object.keys(wishlist).map((game: string) => (
-                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                <tr className="border-b hover:bg-gray-100">
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {wishlist[game].name}
                   </td>
@@ -55,7 +55,6 @@ const Wishlist = () => {
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {wishlist[game].discount}
                   </td>
-
                   <td className="px-6 py-4 whitespace-no-wrap">
                     {wishlist[game].discount_price}
                   </td>

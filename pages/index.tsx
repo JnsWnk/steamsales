@@ -4,6 +4,7 @@ import styles from "@/styles/Home.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import GameList from "@/components/gamelist";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,98 +19,60 @@ export type Game = {
 };
 
 export default function Home() {
-  const [inputValue, setInputValue] = useState("");
-  const [responseData, setResponseData] = useState<{ [id: string]: Game }>({});
+  const [steamId, setSteamId] = useState("76561198087272034");
+  const router = useRouter();
 
-  useEffect(() => {
-    fetch("api/proxy");
-  }, []);
-
-  const handleSubmit = async (e: any) => {
+  const getSales = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (e.target[0].value) {
-      const response = await fetch(`/api/${e.target[0].value}`);
-      const wishlist = await response.json();
-      setResponseData(wishlist);
-
-      for (const id in wishlist) {
-        let game: Game = wishlist[id];
-        const response = await fetch(`/api/scraper/${wishlist[id].name}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data[0]) {
-            game = {
-              ...game,
-              key_price: data[0].price,
-              seller: data[0].name,
-            };
-          } else {
-            game = {
-              ...game,
-              failed: true,
-            };
-          }
-        } else {
-          game = {
-            ...game,
-            failed: true,
-          };
-        }
-        setResponseData((prevState) => ({
-          ...prevState,
-          [id]: game,
-        }));
-      }
-    }
+    router.push({
+      pathname: "/sales",
+      query: { id: steamId },
+    });
   };
 
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Steamsales</title>
         <meta name="description" content="Steamsales!" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <h1> Welcome to Steamsales! </h1>
-        </div>
-
-        <div>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
-            <button type="submit">Submit</button>
-          </form>
-
-          {responseData && (
-            <div>
-              <h2>Response data:</h2>
-              <pre>{JSON.stringify(responseData, null, 2)}</pre>
+      <div>
+        <div className="container mx-auto px-4 py-16">
+          <div className="flex flex-col items-center gap-2">
+            <h1 className="text-5xl font-bold text-white">
+              Welcome to the Steam Store
+            </h1>
+            <p className="text-gray-400 text-lg mt-4">
+              Enter your Steam ID and find the best deals for all your games on
+              your wishlist!
+            </p>
+            <div className="w-full max-w-lg mx-auto my-2">
+              <form onSubmit={getSales}>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
+                  <input
+                    type="search"
+                    id="search"
+                    className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-transparent focus:outline-none focus:border-white"
+                    placeholder="Steam ID ..."
+                    required
+                    value={steamId}
+                    onChange={(e) => setSteamId(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="text-white absolute right-2.5 bottom-2.5 bg-slate-800 hover:bg-white hover:text-slate-800 focus:ring-4 focus:outline-none focus:ring-black font-medium rounded-lg text-sm px-4 py-2"
+                  >
+                    Go
+                  </button>
+                </div>
+              </form>
             </div>
-          )}
+          </div>
         </div>
-
-        <button
-          onClick={(e) => {
-            setInputValue("76561198087272034");
-          }}
-        >
-          {" "}
-          Get my list!{" "}
-        </button>
-
-        <div className={styles.grid}>
-          <h1 className={inter.className}>
-            Read <Link href="/posts/first-post">this page!</Link>
-          </h1>
-        </div>
-        <GameList />
-      </main>
+      </div>
     </>
   );
 }
