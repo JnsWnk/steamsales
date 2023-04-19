@@ -9,21 +9,22 @@ export const authOptions: NextAuthOptions = {
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "Name" },
+        username: { label: "Email", type: "text", placeholder: "Name" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const { username, password } = credentials as any;
-        const res = await fetch("http://localhost:4000/login", {
+        const { email, password } = credentials as any;
+        const res = await fetch("http://localhost:4000/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ email, password }),
         });
-        const user = await res.json();
-        if (res.ok && user) {
-          return user;
+        const json = await res.json();
+        if (res.ok && json) {
+          const { user, token } = json;
+          return { ...user, accessToken: token };
         } else {
           return null;
         }
@@ -33,16 +34,28 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  jwt: {
+    secret: process.env.SECRET,
+  },
   callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accesToken = account.accessToken;
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.accessToken = user.accessToken;
       }
       return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.accessToken = token.accessToken;
+      }
+      return session;
     },
   },
   pages: {
     signIn: "/auth/login",
+    signOut: "/",
   },
 };
 

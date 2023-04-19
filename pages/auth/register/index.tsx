@@ -1,14 +1,35 @@
 import Link from "next/link";
+import { Router, useRouter } from "next/router";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // Add logic here to register the user
+    if (name && email && password) {
+      registerUser();
+    }
+  };
+
+  const registerUser = async () => {
+    const res = await fetch("http://localhost:4000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+    if (res.ok) {
+      toast.success("User registered successfully");
+      router.push("/auth/login");
+    } else {
+      toast.error(res.statusText);
+    }
   };
 
   return (

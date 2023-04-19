@@ -8,7 +8,12 @@ export default function LoginForm() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    signIn("credentials", { email, password, redirect: false });
+    signIn("credentials", {
+      email,
+      password,
+      redirect: true,
+      callbackUrl: "/",
+    });
   };
 
   return (
