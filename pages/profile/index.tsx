@@ -1,31 +1,60 @@
+import ProfileData from "@/components/profiledata";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const { data: session, status, update } = useSession();
+  const [name, setName] = useState(session?.user.name ?? "");
+  const [email, setEmail] = useState(session?.user.name ?? "");
+  const [steamid, setSteamid] = useState(session?.user.name ?? "");
+  const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  // Polling the session every 1 hour
-  useEffect(() => {
-    // TIP: You can also use `navigator.onLine` and some extra event handlers
-    // to check if the user is online and only update the session if they are.
-    // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine
-    const interval = setInterval(() => update(), 1000 * 60 * 60);
-    return () => clearInterval(interval);
-  }, [update]);
+  function handleSaveName() {
+    // TODO: Update user name in the backend
+    fetch(`${backend}/updateUser`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: session?.user.id,
+        name: name,
+        email: email,
+        steamid: steamid,
+      }),
+    });
+  }
 
-  // Listen for when the page is visible, if the user switches tabs
-  // and makes our tab visible again, re-fetch the session
-  useEffect(() => {
-    const visibilityHandler = () =>
-      document.visibilityState === "visible" && update();
-    window.addEventListener("visibilitychange", visibilityHandler, false);
-    return () =>
-      window.removeEventListener("visibilitychange", visibilityHandler, false);
-  }, [update]);
+  function handleSaveEmail() {
+    // TODO: Update user email in the backend
+  }
+
+  function handleSaveSteamId() {
+    // TODO: Update user Steam ID in the backend
+  }
+
   return (
-    <div>
-      <h1>Profile</h1>
-      <p>{session?.user?.email}</p>
+    <div className=" text-white flex flex-col items-center justify-center">
+      <h1 className="text-4xl font-bold mb-8">Your Profile</h1>
+      <div className="w-1/2 flex justify-between">
+        <ProfileData
+          onSubmit={handleSaveName}
+          input={name}
+          setInput={setName}
+          placeholder="Name"
+        ></ProfileData>
+        <ProfileData
+          onSubmit={handleSaveEmail}
+          input={email}
+          setInput={setEmail}
+          placeholder="Email"
+          type="email"
+        ></ProfileData>
+        <ProfileData
+          onSubmit={handleSaveSteamId}
+          input={steamid}
+          setInput={setSteamid}
+          placeholder="SteamId"
+          type="number"
+        ></ProfileData>
+      </div>
     </div>
   );
 }
