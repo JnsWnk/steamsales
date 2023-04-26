@@ -8,6 +8,7 @@ declare module "next-auth" {
     name: string;
     email: string;
     accessToken: string;
+    steamid: number;
   }
   interface Session {
     user: {
@@ -15,6 +16,7 @@ declare module "next-auth" {
       name: string;
       email: string;
       accessToken: string;
+      steamid: number;
     };
   }
 }
