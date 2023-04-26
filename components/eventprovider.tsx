@@ -1,4 +1,4 @@
-import { Game } from "@/pages";
+import { Game } from "@/types/types";
 import {
   createContext,
   useContext,

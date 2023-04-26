@@ -6,10 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <div className="bg-gradient-to-b from-gray-800 to-gray-900 h-screen text-white">
-        <ToastContainer />
-        <Navbar />
-        {children}
+      <div className="flex flex-col min-h-screen">
+        <div className="bg-gradient-to-b from-gray-800 to-gray-900 text-white flex-grow">
+          <ToastContainer />
+          <Navbar />
+          {children}
+        </div>
       </div>
     </>
   );

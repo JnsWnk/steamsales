@@ -20,21 +20,29 @@ const GameTable = ({ data }: Props) => {
     <table className="w-auto text-white">
       <thead>
         <tr>
-          {columns.map((col) => (
-            <th key={col} className="py-2 px-4 text-left">
-              {col}
-            </th>
-          ))}
+          {columns
+            .filter((col) => col !== "key_url" && col !== "failed")
+            .map((col) => (
+              <th key={col} className="py-2 px-4 text-left">
+                {col}
+              </th>
+            ))}
         </tr>
       </thead>
       <tbody>
         {rows.map((row) => (
           <tr key={row.id} className="">
-            {columns.map((col) => (
-              <td key={col} className="py-2 px-4">
-                {row[col]}
-              </td>
-            ))}
+            {columns
+              .filter((col) => col !== "key_url" && col !== "failed")
+              .map((col) => (
+                <td key={col} className="py-2 px-4">
+                  {col === "seller" ? (
+                    <a href={row["key_url"]}>{row[col]}</a>
+                  ) : (
+                    row[col]
+                  )}
+                </td>
+              ))}
           </tr>
         ))}
       </tbody>
