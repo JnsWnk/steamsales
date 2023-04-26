@@ -4,7 +4,6 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ReactNode } from "react";
 import { NextComponentType, NextPageContext } from "next";
 
 type AppAuthProps = AppProps & {
