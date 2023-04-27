@@ -1,5 +1,7 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import LinkButton from "./LinkButton";
+import Button from "./button";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -28,27 +30,12 @@ const Navbar = () => {
         </div>
         {session ? (
           <div className="flex items-center mx-3 space-x-3">
-            <Link
-              className="inline-block px-4 py-2 leading-none border rounded border-white text-white hover:border-transparent hover:text-gray-900 hover:bg-white"
-              href="/profile"
-            >
-              {session.user?.name}
-            </Link>
-            <button
-              className="inline-block px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-900 hover:bg-white"
-              onClick={() => signOut()}
-            >
-              Sign Out
-            </button>
+            <LinkButton href="/profile" text={session.user?.name} />
+            <Button text="Sign Out" onClick={() => signOut()} />
           </div>
         ) : (
           <div>
-            <Link
-              href="/auth/login"
-              className="inline-block text-xl px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-gray-900 hover:bg-white mt-4 lg:mt-0"
-            >
-              Login
-            </Link>
+            <LinkButton href="/auth/register" text="Login" />
           </div>
         )}
       </div>

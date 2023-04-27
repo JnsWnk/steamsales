@@ -1,19 +1,19 @@
+import Link from "next/link";
+
 type Props = {
   text: string;
-  onClick?: () => void;
-  type?: "button" | "submit" | "reset";
+  href: string;
 };
 
-export default function Button(props: Props) {
+export default function LinkButton(props: Props) {
   return (
     <div>
-      <button
+      <Link
         className="bg-white text-slate-700 font-semibold p-3 rounded-lg mb-1 hover:bg-slate-300"
-        onClick={props.onClick}
-        type={props.type}
+        href={props.href}
       >
         {props.text}
-      </button>
+      </Link>
     </div>
   );
 }
