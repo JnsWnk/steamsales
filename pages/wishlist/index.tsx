@@ -1,11 +1,25 @@
 import GameTable from "@/components/gametable";
 import Searchbar from "@/components/searchbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Game } from "@/types/types";
+import { useSession } from "next-auth/react";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState<Game[]>([]);
+  const { data: session, status, update } = useSession();
+
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    const fetchWishlist = async () => {
+      const data = await fetch(`${url}/getWishlist/${session?.user?.steamid}`);
+      const json = await data.json();
+      setWishlist(json);
+    };
+    if (session?.user.steamid) {
+      fetchWishlist();
+    }
+  }, [session]);
 
   const onSubmit = async (value: string) => {
     const data = await fetch(`${url}/getWishlist/${value}`);

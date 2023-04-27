@@ -1,20 +1,39 @@
 import ProfileData from "@/components/profiledata";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
+type Props = {
+  user: any;
+};
 
 export default function EditProfile() {
   const { data: session, status, update } = useSession();
-  const [name, setName] = useState(session?.user.name ?? "");
-  const [email, setEmail] = useState(session?.user.name ?? "");
-  const [steamid, setSteamid] = useState(session?.user.name ?? "");
-  const [changePassword, setChangePassword] = useState(false);
+
+  if (!session) {
+    update();
+    return <div>loading...</div>;
+  }
+
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [steamid, setSteamid] = useState<string>("");
+
   const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  useEffect(() => {
+    setName(session.user.name);
+    setEmail(session.user.email);
+    setSteamid(session.user.steamid || "");
+  }, [session]);
 
   async function handleEditProfile() {
     try {
       const res = await fetch(`${backend}/updateUser`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           id: session?.user.id,
           name: name,
@@ -58,6 +77,9 @@ export default function EditProfile() {
     try {
       const res = await fetch(`${backend}/updatePassword`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           id: session?.user.id,
           newPassword: newPass,
@@ -67,6 +89,7 @@ export default function EditProfile() {
         toast("Password updated successfully!", {
           type: "success",
         });
+        update();
       } else {
         throw new Error(`Failed to update profile: ${res.statusText}`);
       }

@@ -1,6 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { getUserById } from "@/util/db";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -38,17 +39,21 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.SECRET,
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.accessToken = user.accessToken;
+        token.user = user;
+      }
+      if (trigger === "update") {
+        const user = await getUserById(session.user.id);
+        token.user = user;
       }
       return token;
     },
-    async session({ session, token }) {
+    session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.accessToken = token.accessToken;
+        session.user = token.user;
       }
       return session;
     },

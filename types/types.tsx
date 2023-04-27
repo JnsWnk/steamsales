@@ -7,3 +7,11 @@ export type Game = {
   seller?: string;
   failed?: boolean;
 };
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  steamid?: string;
+  accessToken: string;
+};

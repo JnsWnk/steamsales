@@ -1,5 +1,4 @@
 import Button from "@/components/button";
-import EditProfile from "@/components/editProfile";
 import Paragraph from "@/components/paragraph";
 import ProfileSidebar from "@/components/profilesidebar";
 import { useSession } from "next-auth/react";

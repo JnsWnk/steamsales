@@ -5,7 +5,6 @@ import LinkButton from "./linkButton";
 
 const Navbar = () => {
   const { data: session } = useSession();
-  console.log({ session });
   return (
     <nav className="flex items-center justify-between flex-wrap bg-gray-900 px-20 py-5">
       <div className="flex items-center flex-shrink-0 text-white mr-6">

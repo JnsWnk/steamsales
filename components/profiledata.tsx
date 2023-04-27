@@ -2,9 +2,9 @@ import { type } from "os";
 import { ReactEventHandler, useEffect, useState } from "react";
 
 type Props = {
-  onSubmit: (value: string) => void;
+  onSubmit: () => void;
   setInput: (value: string) => void;
-  input: string;
+  input?: string;
   placeholder: string;
   type?: string;
   text?: string;
@@ -15,8 +15,10 @@ const ProfileData = (props: Props) => {
     props.setInput(event.target.value);
   }
 
-  function handleSubmit() {
-    props.onSubmit(props.input);
+  function handleSubmit(event: any) {
+    event.preventDefault();
+    if (props.input == undefined) return;
+    props.onSubmit();
   }
 
   return (
