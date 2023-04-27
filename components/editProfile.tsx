@@ -82,51 +82,52 @@ export default function EditProfile() {
     <div className="flex flex-col">
       <div className=" text-white flex flex-col ">
         <h1 className="text-5xl font-extrabold mb-4 ">Settings</h1>
+        <div className="border p-2 rounded-md border-gray-500 w-1/2">
+          <ProfileData
+            onSubmit={handleEditProfile}
+            input={name}
+            setInput={setName}
+            placeholder="Name"
+            text="Change your display name"
+          ></ProfileData>
+          <ProfileData
+            onSubmit={handleEditProfile}
+            input={email}
+            setInput={setEmail}
+            placeholder="Email"
+            type="email"
+            text="Change your email address"
+          ></ProfileData>
+          <ProfileData
+            onSubmit={handleEditProfile}
+            input={steamid}
+            setInput={setSteamid}
+            placeholder="SteamId"
+            type="number"
+            text="Set your SteamID for this profile"
+          ></ProfileData>
 
-        <ProfileData
-          onSubmit={handleEditProfile}
-          input={name}
-          setInput={setName}
-          placeholder="Name"
-          text="Change your display name"
-        ></ProfileData>
-        <ProfileData
-          onSubmit={handleEditProfile}
-          input={email}
-          setInput={setEmail}
-          placeholder="Email"
-          type="email"
-          text="Change your email address"
-        ></ProfileData>
-        <ProfileData
-          onSubmit={handleEditProfile}
-          input={steamid}
-          setInput={setSteamid}
-          placeholder="SteamId"
-          type="number"
-          text="Set your SteamID for this profile"
-        ></ProfileData>
-
-        <div className="flex">
-          <form onSubmit={handleSavePassword}>
-            <h2 className="font-bold text-2xl mb-1">Change Password</h2>
-            <input
-              type="password"
-              placeholder="Old password"
-              className="shadow appearance-none border rounded-l py-2 px-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            <input
-              type="password"
-              placeholder="New password"
-              className="shadow appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            <button
-              className="hover:bg-white hover:text-slate-900 border text-white rounded-r py-2 px-4 ml-1 focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Update
-            </button>
-          </form>
+          <div className="flex">
+            <form onSubmit={handleSavePassword}>
+              <h2 className="font-bold text-2xl mb-1">Change Password</h2>
+              <input
+                type="password"
+                placeholder="Old password"
+                className="shadow appearance-none border rounded-l py-2 px-3 mr-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              <input
+                type="password"
+                placeholder="New password"
+                className="shadow appearance-none border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+              <button
+                className="hover:bg-white hover:text-slate-900 border text-white rounded-r py-2 px-4 ml-1 focus:outline-none focus:shadow-outline"
+                type="submit"
+              >
+                Update
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
