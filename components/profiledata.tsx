@@ -7,6 +7,7 @@ type Props = {
   input: string;
   placeholder: string;
   type?: string;
+  text?: string;
 };
 
 const ProfileData = (props: Props) => {
@@ -22,8 +23,9 @@ const ProfileData = (props: Props) => {
   }
 
   return (
-    <div className="mb-4">
-      <h2 className="font-bold text-2xl mb-1">{props.placeholder}</h2>
+    <div className="mb-4 w-1/2 border p-2 rounded-md border-gray-700">
+      <h2 className="font-bold text-2xl">{props.placeholder}</h2>
+      <p className="text-slate-500">{props.text}</p>
       {showInput ? (
         <div className="flex">
           <form onSubmit={handleSubmit}>
@@ -48,8 +50,8 @@ const ProfileData = (props: Props) => {
           </form>
         </div>
       ) : (
-        <div className="">
-          <p className="font-semibold text-xl ml-2">{props.input}</p>
+        <div className="mt-2">
+          <p className="font-bold text-2xl ml-2">{props.input}</p>
           <button
             onClick={() => setShowInput(true)}
             className=" hover:text-white text-gray-500 underline font-bold focus:outline-none focus:shadow-outline text-sm"
