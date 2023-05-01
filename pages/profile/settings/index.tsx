@@ -1,10 +1,8 @@
 import EditProfile from "@/components/editProfile";
 import ProfileSidebar from "@/components/profilesidebar";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 export default function Profile() {
-  const { data: session, status, update } = useSession();
-
   return (
     <div className="flex">
       <ProfileSidebar />

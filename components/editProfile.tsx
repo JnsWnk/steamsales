@@ -1,5 +1,5 @@
 import ProfileData from "@/components/profiledata";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,6 @@ export default function EditProfile() {
   const { data: session, status, update } = useSession();
 
   if (!session) {
-    update();
     return <div>loading...</div>;
   }
 
@@ -46,7 +45,6 @@ export default function EditProfile() {
         toast("Profile updated successfully!", {
           type: "success",
         });
-        update();
       } else {
         throw new Error(`Failed to update profile: ${res.statusText}`);
       }
@@ -89,7 +87,6 @@ export default function EditProfile() {
         toast("Password updated successfully!", {
           type: "success",
         });
-        update();
       } else {
         throw new Error(`Failed to update profile: ${res.statusText}`);
       }

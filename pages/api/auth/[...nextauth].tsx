@@ -44,10 +44,6 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.user = user;
       }
-      if (trigger === "update") {
-        const user = await getUserById(session.user.id);
-        token.user = user;
-      }
       return token;
     },
     session({ session, token }) {
