@@ -2,6 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getUserById } from "@/util/db";
+import { toast } from "react-toastify";
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -44,9 +45,40 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.user = user;
       }
+      if (trigger === "update" && session) {
+        try {
+          const res = await fetch(`http://localhost:4000/updateUser`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: token.id,
+              ...session,
+            }),
+          });
+          if (res.ok) {
+            toast("Profile updated successfully!", {
+              type: "success",
+            });
+            token.user.email = session.email;
+            token.user.name = session.name;
+            token.user.steamid = session.steamid;
+          } else {
+            toast("Error updating profile.", {
+              type: "error",
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          toast("An error occurred while updating your profile.", {
+            type: "error",
+          });
+        }
+      }
       return token;
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
         session.user = token.user;

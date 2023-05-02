@@ -26,38 +26,18 @@ export default function EditProfile() {
     setSteamid(session.user.steamid || "");
   }, [session]);
 
-  async function handleEditProfile() {
-    try {
-      const res = await fetch(`${backend}/updateUser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: session?.user.id,
-          name: name,
-          email: email,
-          steamid: steamid,
-        }),
-      });
-
-      if (res.ok) {
-        toast("Profile updated successfully!", {
-          type: "success",
-        });
-      } else {
-        throw new Error(`Failed to update profile: ${res.statusText}`);
-      }
-    } catch (error) {
-      console.error(error);
-      toast("An error occurred while updating your profile.", {
-        type: "error",
-      });
-    }
+  function handleEditProfile() {
+    update({
+      name: name,
+      email: email,
+      steamid: steamid,
+    });
   }
 
   async function handleSavePassword(event: any) {
     event.preventDefault();
+    await getSession();
+    console.log("Session ID: ", session);
     const oldPass = event.target[0].value;
     const newPass = event.target[1].value;
     if (oldPass === newPass) {
@@ -80,6 +60,7 @@ export default function EditProfile() {
         },
         body: JSON.stringify({
           id: session?.user.id,
+          oldPassword: oldPass,
           newPassword: newPass,
         }),
       });
