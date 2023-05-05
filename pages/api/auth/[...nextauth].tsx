@@ -23,10 +23,9 @@ export const authOptions: NextAuthOptions = {
           },
           body: JSON.stringify({ email, password }),
         });
-        const json = await res.json();
-        if (res.ok && json) {
-          const { user, token } = json;
-          return { ...user, accessToken: token };
+        const user = await res.json();
+        if (res.ok && user) {
+          return user;
         } else {
           return null;
         }
@@ -47,7 +46,7 @@ export const authOptions: NextAuthOptions = {
       }
       if (trigger === "update" && session) {
         try {
-          const res = await fetch(`http://localhost:4000/updateUser`, {
+          const res = await fetch(`http://localhost:4000/user/updateUser`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

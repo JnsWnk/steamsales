@@ -12,17 +12,20 @@ const Wishlist = () => {
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      const data = await fetch(`${url}/getWishlist/${session?.user?.steamid}`);
+      const data = await fetch(
+        `${url}/wishlist/getWishlist?id=${session?.user?.steamid}`
+      );
       const json = await data.json();
       setWishlist(json);
     };
     if (session?.user.steamid) {
+      console.log(session?.user.steamid);
       fetchWishlist();
     }
   }, [session]);
 
   const onSubmit = async (value: string) => {
-    const data = await fetch(`${url}/getWishlist/${value}`);
+    const data = await fetch(`${url}/wishlist/getWishlist?id=${value}`);
     const json = await data.json();
     setWishlist(json);
   };

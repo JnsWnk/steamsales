@@ -53,7 +53,7 @@ export default function EditProfile() {
       return;
     }
     try {
-      const res = await fetch(`${backend}/updatePassword`, {
+      const res = await fetch(`${backend}/user/updatePassword`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

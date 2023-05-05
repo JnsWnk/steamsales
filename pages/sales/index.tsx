@@ -15,16 +15,15 @@ export default function Sales() {
 
   useEffect(() => {
     console.log("useEffect" + id);
+    async function fetchSales() {
+      const data = await fetch(`${url}/keys/getKeysForWishlist?id=${id}`);
+      const json = await data.json();
+      setData(json);
+    }
     if (id) {
-      fetch(`${url}/getDeals/${id}`);
+      fetchSales();
     }
   }, [id]);
-
-  useEffect(() => {
-    if (eventSourceData) {
-      setData(eventSourceData);
-    }
-  }, [eventSourceData]);
 
   const onSubmit = (value: string) => {
     router.push({
