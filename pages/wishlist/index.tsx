@@ -3,6 +3,7 @@ import Searchbar from "@/components/searchbar";
 import { useEffect, useState } from "react";
 import { Game } from "@/types/types";
 import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState<Game[]>([]);
@@ -12,22 +13,30 @@ const Wishlist = () => {
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      const data = await fetch(
-        `${url}/wishlist/getWishlist?id=${session?.user?.steamid}`
-      );
-      const json = await data.json();
-      setWishlist(json);
+      try {
+        const data = await fetch(
+          `${url}/wishlist/getWishlist?id=${session?.user?.steamid}`
+        );
+        const json = await data.json();
+        setWishlist(json);
+      } catch (error) {
+        toast.error("Could not get wishlist for this id.");
+      }
+      if (session?.user.steamid) {
+        console.log(session?.user.steamid);
+        fetchWishlist();
+      }
     };
-    if (session?.user.steamid) {
-      console.log(session?.user.steamid);
-      fetchWishlist();
-    }
   }, [session]);
 
   const onSubmit = async (value: string) => {
-    const data = await fetch(`${url}/wishlist/getWishlist?id=${value}`);
-    const json = await data.json();
-    setWishlist(json);
+    try {
+      const data = await fetch(`${url}/wishlist/getWishlist?id=${value}`);
+      const json = await data.json();
+      setWishlist(json);
+    } catch (error) {
+      toast.error("Could not get wishlist for this id.");
+    }
   };
 
   return (

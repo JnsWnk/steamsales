@@ -4,6 +4,7 @@ import GameTable from "@/components/gametable";
 import { useEventSource } from "@/components/eventprovider";
 import Searchbar from "@/components/searchbar";
 import { Game } from "@/types/types";
+import { toast } from "react-toastify";
 
 export default function Sales() {
   const router = useRouter();
@@ -14,11 +15,14 @@ export default function Sales() {
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    console.log("useEffect" + id);
     async function fetchSales() {
-      const data = await fetch(`${url}/keys/getKeysForWishlist?id=${id}`);
-      const json = await data.json();
-      setData(json);
+      try {
+        const data = await fetch(`${url}/keys/getKeysForWishlist?id=${id}`);
+        const json = await data.json();
+        setData(json);
+      } catch (error) {
+        toast.error("Could not get sales for this id.");
+      }
     }
     if (id) {
       fetchSales();
