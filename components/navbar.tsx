@@ -26,6 +26,12 @@ const Navbar = () => {
           >
             Wishlist
           </Link>
+          <Link
+            href="/about"
+            className="block mt-4 lg:inline-block lg:mt-0 text-gray-500 hover:text-white mr-4"
+          >
+            About
+          </Link>
         </div>
         {session ? (
           <div className="flex items-center mx-3 space-x-3">

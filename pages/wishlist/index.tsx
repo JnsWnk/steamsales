@@ -4,39 +4,43 @@ import { useEffect, useState } from "react";
 import { Game } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState<Game[]>([]);
+  const router = useRouter();
+  const { id } = router.query;
   const { data: session, status, update } = useSession();
 
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
-    const fetchWishlist = async () => {
+    async function fetchSales() {
       try {
-        const data = await fetch(
-          `${url}/wishlist/getWishlist?id=${session?.user?.steamid}`
-        );
+        const data = await fetch(`${url}/wishlist/getWishlist?id=${id}`);
         const json = await data.json();
         setWishlist(json);
       } catch (error) {
         toast.error("Could not get wishlist for this id.");
       }
-      if (session?.user.steamid) {
-        console.log(session?.user.steamid);
-        fetchWishlist();
-      }
-    };
-  }, [session]);
-
-  const onSubmit = async (value: string) => {
-    try {
-      const data = await fetch(`${url}/wishlist/getWishlist?id=${value}`);
-      const json = await data.json();
-      setWishlist(json);
-    } catch (error) {
-      toast.error("Could not get wishlist for this id.");
     }
+    if (id) {
+      fetchSales();
+    } else {
+      if (session?.user.steamid) {
+        router.push({
+          pathname: "/wishlist",
+          query: { id: session?.user.steamid },
+        });
+      }
+    }
+  }, [id]);
+
+  const onSubmit = (value: string) => {
+    router.push({
+      pathname: "/sales",
+      query: { id: value },
+    });
   };
 
   return (

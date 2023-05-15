@@ -5,12 +5,13 @@ import { useEventSource } from "@/components/eventprovider";
 import Searchbar from "@/components/searchbar";
 import { Game } from "@/types/types";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 
 export default function Sales() {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState<Game[]>([]);
-  const eventSourceData = useEventSource();
+  const { data: session, status, update } = useSession();
 
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -26,6 +27,13 @@ export default function Sales() {
     }
     if (id) {
       fetchSales();
+    } else {
+      if (session?.user.steamid) {
+        router.push({
+          pathname: "/sales",
+          query: { id: session?.user.steamid },
+        });
+      }
     }
   }, [id]);
 
