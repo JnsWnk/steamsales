@@ -33,11 +33,35 @@ export default function Home() {
             </p>
             <Searchbar onSubmit={getSales} placeholder="Steam ID..." />
             <p className="text-gray-400 text-lg mt-4">
-              <Link href="/sales?id=76561198087272034">
+              <Link
+                href="/sales?id=76561198087272034"
+                className="hover:text-white"
+              >
                 {" "}
                 Or check out my list here!
               </Link>
             </p>
+            <div className="w-1/3 mt-4 text-slate-300 text-center">
+              <h2 className="text-white font-bold text-2xl mb-2">
+                {" "}
+                This Project
+              </h2>
+              <p>
+                This is only a demo project that i did for fun as a proof of
+                concept. This project is running for free and without paid proxy
+                servers, it not viable to run such a service. It's fully open
+                source and funcional, but it will only fetch 4 new keys per
+                request and it may take a few seconds. Check out the
+                <Link
+                  href="/about"
+                  className="underline text-slate-500 hover:text-white"
+                >
+                  {" "}
+                  About{" "}
+                </Link>{" "}
+                page for more info and the GitHub.{" "}
+              </p>
+            </div>
           </div>
         </div>
       </div>
