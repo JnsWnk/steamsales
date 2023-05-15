@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { data: session, status, update } = useSession();
@@ -16,12 +17,15 @@ const Wishlist = () => {
 
   useEffect(() => {
     async function fetchSales() {
+      setLoading(true);
       try {
         const data = await fetch(`${url}/wishlist/getWishlist?id=${id}`);
         const json = await data.json();
         setWishlist(json);
       } catch (error) {
         toast.error("Could not get wishlist for this id.");
+      } finally {
+        setLoading(false);
       }
     }
     if (id) {
@@ -38,7 +42,7 @@ const Wishlist = () => {
 
   const onSubmit = (value: string) => {
     router.push({
-      pathname: "/sales",
+      pathname: "/wishlist",
       query: { id: value },
     });
   };
@@ -49,7 +53,7 @@ const Wishlist = () => {
         Check out your Steam wishlist!
       </h1>
       <Searchbar onSubmit={onSubmit} placeholder="Steam ID..." />
-      <GameTable data={wishlist} />
+      {loading ? <p> Loading ... </p> : <GameTable data={wishlist} />}
     </div>
   );
 };

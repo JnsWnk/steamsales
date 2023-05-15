@@ -11,18 +11,22 @@ export default function Sales() {
   const router = useRouter();
   const { id } = router.query;
   const [data, setData] = useState<Game[]>([]);
+  const [loading, setLoading] = useState(false);
   const { data: session, status, update } = useSession();
 
   const url = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
     async function fetchSales() {
+      setLoading(true);
       try {
         const data = await fetch(`${url}/keys/getKeysForWishlist?id=${id}`);
         const json = await data.json();
         setData(json);
       } catch (error) {
         toast.error("Could not get sales for this id.");
+      } finally {
+        setLoading(false);
       }
     }
     if (id) {
@@ -52,8 +56,12 @@ export default function Sales() {
       <p className="text-gray-400 text-lg mt-4">
         Find the cheapest Keys for your games!
       </p>
+      <p className="text-gray-400 text-sm mt-1 w-1/4 text-center">
+        Note: Because this is only a demo project and i dont have any proxies, i
+        can only fetch the keys for 4 new games and it may take a few seconds.
+      </p>
       <Searchbar onSubmit={onSubmit} placeholder="Steam ID..." />
-      <GameTable data={data} />
+      {loading ? <p>Loading ...</p> : <GameTable data={data} />}
     </div>
   );
 }
