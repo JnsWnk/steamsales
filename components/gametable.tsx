@@ -1,4 +1,5 @@
 import { Game } from "@/types/types";
+import Image from "next/image";
 
 type Props = {
   data: Game[];
@@ -64,7 +65,7 @@ const GameTable = ({ data }: Props) => {
                     className="p-2 text-left"
                   >
                     {field.field === "imglink" ? (
-                      <img
+                      <Image
                         src={item[field.field]}
                         alt={field.column}
                         className="max-w-full max-h-full"

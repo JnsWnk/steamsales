@@ -9,11 +9,6 @@ type Props = {
 
 export default function EditProfile() {
   const { data: session, status, update } = useSession();
-
-  if (!session) {
-    return <div>loading...</div>;
-  }
-
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [steamid, setSteamid] = useState<string>("");
@@ -21,6 +16,7 @@ export default function EditProfile() {
   const backend = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   useEffect(() => {
+    if (!session) return;
     setName(session.user.name);
     setEmail(session.user.email);
     setSteamid(session.user.steamid || "");

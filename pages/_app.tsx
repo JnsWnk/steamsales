@@ -5,9 +5,9 @@ import type { AppProps } from "next/app";
 import { SessionProvider, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { NextComponentType, NextPageContext } from "next";
+import { ReactNode } from "react";
 
 type AppAuthProps = AppProps & {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Component: NextComponentType<NextPageContext, any, {}> &
     Partial<{ auth: boolean }>;
 };
@@ -33,7 +33,11 @@ export default function App({
   );
 }
 
-function Auth({ children }) {
+interface AuthProps {
+  children: ReactNode;
+}
+
+function Auth({ children }: AuthProps) {
   // if `{ required: true }` is supplied, `status` can only be "loading" or "authenticated"
   const { data: session, status } = useSession({ required: true });
   const router = useRouter();
@@ -47,5 +51,5 @@ function Auth({ children }) {
     return null;
   }
 
-  return children;
+  return <>{children}</>;
 }
