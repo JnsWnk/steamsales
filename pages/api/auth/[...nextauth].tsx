@@ -4,6 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { getUserById } from "@/util/db";
 import { toast } from "react-toastify";
 
+const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -16,7 +18,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         const { email, password } = credentials as any;
-        const res = await fetch("http://localhost:4000/auth/login", {
+        const res = await fetch(`${url}/auth/login`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -46,7 +48,7 @@ export const authOptions: NextAuthOptions = {
       }
       if (trigger === "update" && session) {
         try {
-          const res = await fetch(`http://localhost:4000/user/updateUser`, {
+          const res = await fetch(`${url}/user/updateUser`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
